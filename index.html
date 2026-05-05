@@ -180,12 +180,22 @@ select{padding:5px 8px;border:1.5px solid var(--bord);border-radius:7px;font-siz
   <button onclick="closeExpMenu();" style="display:block;width:100%;text-align:left;padding:6px 10px;border:none;background:none;cursor:pointer;color:var(--sub);font-size:12px;border-radius:7px;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='none'">✕ Fermer</button>
 </div>
 
-<!-- MODAL CHOIX TYPE DE PAGE -->
+<!-- MODAL CHOIX TYPE DE LIGNE -->
+<div id="modal-addligne" style="display:none;position:fixed;inset:0;background:rgba(10,20,40,0.85);z-index:9998;align-items:center;justify-content:center;">
+  <div class="modal-box">
+    <h3>Quel type de ligne ajouter ?</h3>
+    <button class="modal-opt" onclick="addLigneCfgType(1)">📷 Ligne 1<br><span style="font-size:11px;font-weight:400;color:var(--sub);">5 cadres · H: 61.75mm · Esp: 2mm horiz, 12.5mm vert · Haut:3.5 Bas:9 G:1 D:1</span></button>
+    <button class="modal-opt" onclick="addLigneCfgType(2)">📷 Ligne 2<br><span style="font-size:11px;font-weight:400;color:var(--sub);">6 cadres · H: 50mm · Esp: 1.5mm horiz, 9mm vert · Haut:2 Bas:7 G:0.75 D:0.75</span></button>
+    <button class="modal-opt" onclick="addLigneCfgType(3)">📷 Ligne 3<br><span style="font-size:11px;font-weight:400;color:var(--sub);">4 cadres · H: 85mm · Esp: 2mm horiz, 14mm vert · Haut:4 Bas:10 G:1 D:1</span></button>
+    <button class="modal-cancel" onclick="document.getElementById('modal-addligne').style.display='none'">Annuler</button>
+  </div>
+</div>
 <div id="modal-addpage">
   <div class="modal-box">
     <h3>Quel type de page ajouter ?</h3>
     <button class="modal-opt" onclick="addPage('grille1')">🔲 Grille auto — Modèle 1<br><span style="font-size:11px;font-weight:400;color:var(--sub);">5×4 (20 cadres) — marges serrées</span></button>
     <button class="modal-opt" onclick="addPage('grille2')">🔲 Grille auto — Modèle 2<br><span style="font-size:11px;font-weight:400;color:var(--sub);">6×5 (30 cadres) — marges compactes</span></button>
+    <button class="modal-opt" onclick="addPage('grille3')">🔲 Grille auto — Modèle 3<br><span style="font-size:11px;font-weight:400;color:var(--sub);">4×3 (12 cadres) — 5.05×8.50 cm</span></button>
     <button class="modal-opt" onclick="addPage('lignes')">📋 Lignes libres<br><span style="font-size:11px;font-weight:400;color:var(--sub);">Hauteurs de ligne personnalisées</span></button>
     <button class="modal-cancel" onclick="document.getElementById('modal-addpage').classList.remove('show')">Annuler</button>
   </div>
@@ -221,23 +231,39 @@ select{padding:5px 8px;border:1.5px solid var(--bord);border-radius:7px;font-siz
 <div class="panel" id="panel-grille">
   <div id="grille-page-info" style="font-size:11px;color:var(--orange);font-weight:700;padding:4px 8px;background:rgba(243,156,18,0.1);border-radius:7px;display:none;"></div>
   <div class="hint">Entrez colonnes et lignes — la taille des cadres est <strong>calculée automatiquement</strong> pour remplir parfaitement la page.</div>
+
+  <!-- Modèle 1 -->
   <div class="psect">
-    <div class="ptit">Disposition</div>
-    <div class="orow"><span class="olb">Colonnes</span><input class="oi" id="g-cols" type="number" value="5" min="1" max="12" oninput="updateGrillePreview()"></div>
-    <div class="orow"><span class="olb">Lignes</span><input class="oi" id="g-rows" type="number" value="4" min="1" max="15" oninput="updateGrillePreview()"></div>
-    <div style="font-size:11px;color:var(--green);margin:4px 0;" id="g-perlbl">= 20 photos/page</div>
+    <div class="ptit" style="color:var(--blue);">Modèle 1 — 5 col × 4 lig = 20 photos</div>
+    <div class="orow"><span class="olb">Colonnes</span><input class="oi" style="width:46px;" type="number" value="5" min="1" max="12" readonly></div>
+    <div class="orow"><span class="olb">Lignes</span><input class="oi" style="width:46px;" type="number" value="4" min="1" max="15" readonly></div>
+    <div style="font-size:11px;color:var(--sub);margin:2px 0 4px 0;">Haut: 3.5mm · Bas: 9mm · G: 1mm · D: 1mm · Entre col: 2mm · Entre lig: 12.5mm</div>
   </div>
+
+  <!-- Modèle 2 -->
   <div class="psect">
-    <div class="ptit">Espacements (par défaut optimaux)</div>
-    <div class="orow"><span class="olb">&#8679; Haut</span><input class="oi" id="g-mt" type="number" value="3.5" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
-    <div class="orow"><span class="olb">&#8681; Bas</span><input class="oi" id="g-mb" type="number" value="9" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
-    <div class="orow"><span class="olb">&#8678; Gauche</span><input class="oi" id="g-ml" type="number" value="1" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
-    <div class="orow"><span class="olb">&#8680; Droite</span><input class="oi" id="g-mr" type="number" value="1" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
-    <div class="orow"><span class="olb">&#8596; Entre colonnes</span><input class="oi" id="g-gcol" type="number" value="2" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
-    <div class="orow"><span class="olb">&#8597; Entre lignes</span><input class="oi" id="g-grow" type="number" value="12.5" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
+    <div class="ptit" style="color:var(--purple);">Modèle 2 — 6 col × 5 lig = 30 photos</div>
+    <div class="orow"><span class="olb">Colonnes</span><input class="oi" style="width:46px;" type="number" value="6" min="1" max="12" readonly></div>
+    <div class="orow"><span class="olb">Lignes</span><input class="oi" style="width:46px;" type="number" value="5" min="1" max="15" readonly></div>
+    <div style="font-size:11px;color:var(--sub);margin:2px 0 4px 0;">Haut: 2mm · Bas: 7mm · G: 0.75mm · D: 0.75mm · Entre col: 1.5mm · Entre lig: 9mm</div>
+  </div>
+
+  <!-- Modèle 3 -->
+  <div class="psect" style="border:1.5px solid var(--green);">
+    <div class="ptit">Modèle 3 — 4 col × 3 lig = 12 photos</div>
+    <div class="orow"><span class="olb">Colonnes</span><input class="oi" id="g-cols" style="width:46px;" type="number" value="4" min="1" max="12" oninput="updateGrillePreview()"></div>
+    <div class="orow"><span class="olb">Lignes</span><input class="oi" id="g-rows" style="width:46px;" type="number" value="3" min="1" max="15" oninput="updateGrillePreview()"></div>
+    <div style="font-size:11px;color:var(--green);margin:2px 0 4px 0;" id="g-perlbl">= 12 photos/page</div>
+    <div class="orow"><span class="olb">↑ Haut</span><input class="oi" id="g-mt" type="number" value="4" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
+    <div class="orow"><span class="olb">↓ Bas</span><input class="oi" id="g-mb" type="number" value="10" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
+    <div class="orow"><span class="olb">← Gauche</span><input class="oi" id="g-ml" type="number" value="1" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
+    <div class="orow"><span class="olb">→ Droite</span><input class="oi" id="g-mr" type="number" value="1" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
+    <div class="orow"><span class="olb">↔ Entre colonnes</span><input class="oi" id="g-gcol" type="number" value="2" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
+    <div class="orow"><span class="olb">↕ Entre lignes</span><input class="oi" id="g-grow" type="number" value="14" step="0.5" oninput="updateGrillePreview()"><span class="ou">mm</span></div>
     <div class="orow"><span class="olb">Arrondi coins</span><input class="oi" id="g-cr" type="number" value="0" min="0" max="80" oninput="updateGrillePreview()"><span class="ou">px</span></div>
+    <div class="psect" id="g-auto-info" style="font-size:12px;color:var(--sub);line-height:1.9;margin-top:6px;"></div>
   </div>
-  <div class="psect" id="g-auto-info" style="font-size:12px;color:var(--sub);line-height:1.9;"></div>
+
   <div style="display:flex;gap:8px;flex-wrap:wrap;">
     <button class="osv" onclick="generateGrille()">&#10003; Générer automatiquement</button>
     <button class="ors" onclick="resetGrille()">&#8635; Valeurs par défaut</button>
@@ -250,7 +276,7 @@ select{padding:5px 8px;border:1.5px solid var(--bord);border-radius:7px;font-siz
   <div id="lignes-page-info" style="font-size:11px;color:var(--orange);font-weight:700;padding:4px 8px;background:rgba(243,156,18,0.1);border-radius:7px;display:none;"></div>
   <div class="hint">Configurez chaque <strong>ligne</strong> indépendamment : nombre de cadres côte à côte et hauteur.</div>
   <div class="lignes-wrap" id="lignes-wrap"></div>
-  <button class="add-ligne-btn" onclick="addLigneCfg()">+ Ajouter une ligne</button>
+  <button class="add-ligne-btn" onclick="showAddLigneModal()">+ Ajouter une ligne</button>
   <div style="margin-top:8px;font-size:12px;color:var(--sub);">Espacement entre cadres :
     <input class="oi" style="width:50px;margin:0 4px;" id="l-gcol" type="number" value="2" step="0.5"> mm horiz.
     <input class="oi" style="width:50px;margin:0 4px;" id="l-grow" type="number" value="12.5" step="0.5"> mm vert.
@@ -416,7 +442,8 @@ let pageMode=[];
 // Défauts grille 
 const PAGE_DEFAULTS=[
   {cols:5,rows:4,mt:3.5,mb:9,ml:1,mr:1,gcol:2,grow:12.5,radius:0},
-  {cols:6,rows:5,mt:2,mb:7,ml:0.75,mr:0.75,gcol:1.5,grow:9,radius:0}
+  {cols:6,rows:5,mt:2,mb:7,ml:0.75,mr:0.75,gcol:1.5,grow:9,radius:0},
+  {cols:4,rows:3,mt:4,mb:10,ml:1,mr:1,gcol:2,grow:14,radius:0}
 ];
 function getPageDefault(pi){return PAGE_DEFAULTS[pi%2];}
 
@@ -430,7 +457,7 @@ let pageLigneCfgs=[];
 function defaultLigneCfgs(){
   return [
     {cols:5,heightMm:61.75},
-    {cols:4,heightMm:50},
+    {cols:6,heightMm:50},
     {cols:4,heightMm:61.3},
     {cols:5,heightMm:61.75}
   ];
@@ -547,7 +574,7 @@ function calcGrilleAuto(){
 }
 
 function resetGrille(){
-  const d=PAGE_DEFAULTS[0];
+  const d=PAGE_DEFAULTS[2];
   document.getElementById('g-cols').value=d.cols;document.getElementById('g-rows').value=d.rows;
   document.getElementById('g-mt').value=d.mt;document.getElementById('g-mb').value=d.mb;
   document.getElementById('g-ml').value=d.ml;document.getElementById('g-mr').value=d.mr;
@@ -624,6 +651,34 @@ function addLigneCfg(){
   // Dupliquer la dernière ligne existante
   const last=lcs[lcs.length-1]||{cols:4,heightMm:55};
   lcs.push({cols:last.cols,heightMm:last.heightMm});
+  renderLigneCfg();
+}
+
+// Presets de lignes
+const LIGNE_PRESETS=[
+  null,
+  {cols:5,heightMm:61.75,gcol:2,grow:12.5,mt:3.5,mb:9,ml:1,mr:1},
+  {cols:6,heightMm:50,gcol:1.5,grow:9,mt:2,mb:7,ml:0.75,mr:0.75},
+  {cols:4,heightMm:85,gcol:2,grow:14,mt:4,mb:10,ml:1,mr:1}
+];
+
+function showAddLigneModal(){
+  document.getElementById('modal-addligne').style.display='flex';
+}
+
+function addLigneCfgType(type){
+  document.getElementById('modal-addligne').style.display='none';
+  const pi=_editPageIdx!==undefined?_editPageIdx:0;
+  const lcs=getLigneCfgs(pi);
+  const preset=LIGNE_PRESETS[type];
+  lcs.push({cols:preset.cols,heightMm:preset.heightMm});
+  // Appliquer les espacements du preset choisi
+  document.getElementById('l-gcol').value=preset.gcol;
+  document.getElementById('l-grow').value=preset.grow;
+  document.getElementById('mt').value=preset.mt;
+  document.getElementById('mb2').value=preset.mb;
+  document.getElementById('ml').value=preset.ml;
+  document.getElementById('mr').value=preset.mr;
   renderLigneCfg();
 }
 
@@ -998,7 +1053,7 @@ function addPage(type){
     pageLigneCfgs[newPi]=defaultLigneCfgs();
     pages.push(pageLigneCfgs[newPi].map(l=>Array.from({length:l.cols},()=>newCell(parseInt(document.getElementById('gar').value)||0))));
   } else {
-    const dIdx=type==='grille2'?1:0;
+    const dIdx=type==='grille3'?2:type==='grille2'?1:0;
     const d=PAGE_DEFAULTS[dIdx];
     const cw=(cfg.pageW-d.ml-d.mr-(d.cols-1)*d.gcol)/d.cols;
     const ch=(cfg.pageH-d.mt-d.mb-(d.rows-1)*d.grow)/d.rows;
@@ -1245,8 +1300,15 @@ dz.addEventListener('dragleave',()=>dz.style.background='');
 dz.addEventListener('drop',ev=>{ev.preventDefault();dz.style.background='';handleFiles(ev.dataTransfer.files);});
 document.addEventListener('click',ev=>{if(!ev.target.closest('#popup')&&!ev.target.closest('.cell'))closePopup();});
 
-// INIT — première page en mode grille (modèle 1)
+// INIT — première page en mode grille (modèle 3 — 4×3 = 12 photos)
 pageMode[0]='grille';
+(function(){
+  const d=PAGE_DEFAULTS[2];
+  const cw=(cfg.pageW-d.ml-d.mr-(d.cols-1)*d.gcol)/d.cols;
+  const ch=(cfg.pageH-d.mt-d.mb-(d.rows-1)*d.grow)/d.rows;
+  pageConfigs[0]=Object.assign({},d,{cw,ch});
+  pages[0]=Array.from({length:d.cols*d.rows},()=>newCell(d.radius));
+})();
 pageLigneCfgs[0]=defaultLigneCfgs();
 renderLigneCfg();
 updateGrillePreview();
