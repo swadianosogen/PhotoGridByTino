@@ -959,20 +959,41 @@ function makeCell(c,pi,idx1,idx2,cellW,cellH,showBadge){
   cell.appendChild(bdg);
 
   if(c.src){
+    c._dispW=cellW;c._dispH=cellH;
     const iw=document.createElement('div');iw.className='iw';
     const img=document.createElement('img');img.src=c.src;img.draggable=false;
+    const clampPos=()=>{
+      const natW=img.naturalWidth||1;const natH=img.naturalHeight||1;
+      const rot=(c.rotation||0);const isR90=(rot===90||rot===270);
+      let coverScale;
+      if(isR90){coverScale=Math.max(cellW/natH,cellH/natW);}
+      else{coverScale=Math.max(cellW/natW,cellH/natH);}
+      const finalScale=coverScale*c.imgScale;
+      // Dimensions visuelles APRÈS rotation
+      const visW=isR90?natH*finalScale:natW*finalScale;
+      const visH=isR90?natW*finalScale:natH*finalScale;
+      const maxX=Math.max(0,(visW-cellW)/2);
+      const maxY=Math.max(0,(visH-cellH)/2);
+      c.imgX=Math.max(-maxX,Math.min(maxX,c.imgX));
+      c.imgY=Math.max(-maxY,Math.min(maxY,c.imgY));
+    };
     const applyT=()=>{
       const rot=(c.rotation||0);const isR90=(rot===90||rot===270);
-      let adjScale=c.imgScale;
-      if(isR90){const ratio=Math.max(cellW/cellH,cellH/cellW);adjScale=c.imgScale*ratio;}
-      img.style.cssText='left:50%;top:50%;width:100%;height:100%;object-fit:cover;transform:translate(calc(-50% + '+c.imgX+'px),calc(-50% + '+c.imgY+'px)) rotate('+rot+'deg) scale('+adjScale+');';
+      const natW=img.naturalWidth||1;const natH=img.naturalHeight||1;
+      let coverScale;
+      if(isR90){coverScale=Math.max(cellW/natH,cellH/natW);}
+      else{coverScale=Math.max(cellW/natW,cellH/natH);}
+      const finalScale=coverScale*c.imgScale;
+      const dispW=natW*finalScale;const dispH=natH*finalScale;
+      img.style.cssText='position:absolute;width:'+dispW+'px;height:'+dispH+'px;left:calc(50% - '+(dispW/2)+'px + '+c.imgX+'px);top:calc(50% - '+(dispH/2)+'px + '+c.imgY+'px);transform:rotate('+rot+'deg);transform-origin:center center;pointer-events:none;user-select:none;max-width:none;max-height:none;';
     };
+    img.onload=()=>{applyT();};
     applyT();
 
     // Drag et touch : seulement en mode zoom
     let drag=false,sx=0,sy=0,ox=0,oy=0;
     iw.addEventListener('mousedown',ev=>{if(currentMode!=='zoom')return;drag=true;sx=ev.clientX;sy=ev.clientY;ox=c.imgX;oy=c.imgY;iw.style.cursor='grabbing';ev.preventDefault();});
-    window.addEventListener('mousemove',ev=>{if(!drag)return;c.imgX=ox+(ev.clientX-sx);c.imgY=oy+(ev.clientY-sy);applyT();});
+    window.addEventListener('mousemove',ev=>{if(!drag)return;c.imgX=ox+(ev.clientX-sx);c.imgY=oy+(ev.clientY-sy);clampPos();applyT();});
     window.addEventListener('mouseup',()=>{if(drag){drag=false;iw.style.cursor='grab';}});
     
     let ts=null;
@@ -983,7 +1004,7 @@ function makeCell(c,pi,idx1,idx2,cellW,cellH,showBadge){
     },{passive:false});
     iw.addEventListener('touchmove',ev=>{
       if(currentMode!=='zoom'||!ts||ev.touches.length!==1)return;
-      c.imgX=ts.ox+(ev.touches[0].clientX-ts.x);c.imgY=ts.oy+(ev.touches[0].clientY-ts.y);applyT();ev.preventDefault();
+      c.imgX=ts.ox+(ev.touches[0].clientX-ts.x);c.imgY=ts.oy+(ev.touches[0].clientY-ts.y);clampPos();applyT();ev.preventDefault();
     },{passive:false});
     iw.addEventListener('touchend',()=>{ts=null;});
 
@@ -1373,9 +1394,14 @@ function renderC(c,pw,ph,radius,jpegQ){
       ctx.clearRect(0,0,pw,ph);
       if(radius>0){ctx.beginPath();ctx.moveTo(radius,0);ctx.lineTo(pw-radius,0);ctx.quadraticCurveTo(pw,0,pw,radius);ctx.lineTo(pw,ph-radius);ctx.quadraticCurveTo(pw,ph,pw-radius,ph);ctx.lineTo(radius,ph);ctx.quadraticCurveTo(0,ph,0,ph-radius);ctx.lineTo(0,radius);ctx.quadraticCurveTo(0,0,radius,0);ctx.closePath();ctx.clip();}
       const rot=(c.rotation||0)*Math.PI/180;const isR90=(c.rotation===90||c.rotation===270);
-      ctx.save();ctx.translate(pw/2+c.imgX*(pw/80),ph/2+c.imgY*(ph/80));ctx.rotate(rot);
-      let s0;if(isR90){s0=Math.max(pw/img.height,ph/img.width)*c.imgScale;}else{s0=Math.max(pw/img.width,ph/img.height)*c.imgScale;}
-      ctx.drawImage(img,-img.width*s0/2,-img.height*s0/2,img.width*s0,img.height*s0);
+      let coverScale;
+      if(isR90){coverScale=Math.max(pw/img.height,ph/img.width);}
+      else{coverScale=Math.max(pw/img.width,ph/img.height);}
+      const finalScale=coverScale*c.imgScale;
+      // imgX/imgY en px display, on les scale au ratio canvas/display
+      const rx=c._dispW?pw/c._dispW:1;const ry=c._dispH?ph/c._dispH:1;
+      ctx.save();ctx.translate(pw/2+c.imgX*rx,ph/2+c.imgY*ry);ctx.rotate(rot);
+      ctx.drawImage(img,-img.width*finalScale/2,-img.height*finalScale/2,img.width*finalScale,img.height*finalScale);
       ctx.restore();res(cv.toDataURL('image/jpeg',q));
     };img.onerror=()=>res(null);img.src=c.src;
   });
