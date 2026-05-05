@@ -50,9 +50,14 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-hei
 .ligne-card{background:var(--surf);border:1.5px solid var(--bord);border-radius:10px;padding:10px 12px;position:relative;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
 .ligne-card-title{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;width:100%;}
 .ligne-inp-group{display:flex;align-items:center;gap:5px;}
+.ligne-inp-group.col{flex-direction:column;align-items:flex-start;}
 .ligne-inp-group label{font-size:11px;color:var(--sub);}
 .ligne-inp-group input{width:55px;padding:4px 6px;border:1.5px solid var(--bord);border-radius:6px;font-size:12px;font-weight:700;color:var(--text);text-align:center;background:var(--s2);}
+.ligne-inp-group.col input{width:100%;}
 .ligne-inp-group input:focus{outline:none;border-color:var(--green);}
+.ligne-esp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;margin-top:6px;padding-top:6px;border-top:1px solid var(--bord);}
+.ligne-esp-grid .ligne-inp-group{flex-direction:column;align-items:flex-start;gap:2px;}
+.ligne-esp-grid .ligne-inp-group input{width:100%;}
 .ligne-del{position:absolute;top:6px;right:8px;background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;font-weight:700;}
 .add-ligne-btn{background:rgba(29,158,117,0.08);border:1.5px dashed var(--green);border-radius:10px;padding:9px 14px;color:var(--green);font-size:12px;font-weight:700;cursor:pointer;text-align:center;}
 
@@ -184,20 +189,64 @@ select{padding:5px 8px;border:1.5px solid var(--bord);border-radius:7px;font-siz
 <div id="modal-addligne" style="display:none;position:fixed;inset:0;background:rgba(10,20,40,0.85);z-index:9998;align-items:center;justify-content:center;">
   <div class="modal-box">
     <h3>Quel type de ligne ajouter ?</h3>
-    <button class="modal-opt" onclick="addLigneCfgType(1)">📷 Ligne 1<br><span style="font-size:11px;font-weight:400;color:var(--sub);">5 cadres · H: 61.75mm · Esp: 2mm horiz, 12.5mm vert · Haut:3.5 Bas:9 G:1 D:1</span></button>
-    <button class="modal-opt" onclick="addLigneCfgType(2)">📷 Ligne 2<br><span style="font-size:11px;font-weight:400;color:var(--sub);">6 cadres · H: 50mm · Esp: 1.5mm horiz, 9mm vert · Haut:2 Bas:7 G:0.75 D:0.75</span></button>
-    <button class="modal-opt" onclick="addLigneCfgType(3)">📷 Ligne 3<br><span style="font-size:11px;font-weight:400;color:var(--sub);">4 cadres · H: 85mm · Esp: 2mm horiz, 14mm vert · Haut:4 Bas:10 G:1 D:1</span></button>
+    <button class="modal-opt" onclick="addLigneCfgType(1)">📷 Ligne 100ar<br><span style="font-size:11px;font-weight:400;color:var(--sub);">6 cadres · H: 50mm · Esp: 1.5mm horiz, 9mm vert · Haut:2 Bas:7 G:0.75 D:0.75</span></button>
+    <button class="modal-opt" onclick="addLigneCfgType(2)">📷 Ligne 200ar<br><span style="font-size:11px;font-weight:400;color:var(--sub);">5 cadres · H: 61.75mm · Esp: 2mm horiz, 12.5mm vert · Haut:3.5 Bas:9 G:1 D:1</span></button>
+    <button class="modal-opt" onclick="addLigneCfgType(3)">📷 Ligne 300ar<br><span style="font-size:11px;font-weight:400;color:var(--sub);">4 cadres · H: 85mm · Esp: 2mm horiz, 14mm vert · Haut:4 Bas:10 G:1 D:1</span></button>
     <button class="modal-cancel" onclick="document.getElementById('modal-addligne').style.display='none'">Annuler</button>
   </div>
 </div>
 <div id="modal-addpage">
   <div class="modal-box">
     <h3>Quel type de page ajouter ?</h3>
-    <button class="modal-opt" onclick="addPage('grille1')">🔲 Grille auto — Modèle 1<br><span style="font-size:11px;font-weight:400;color:var(--sub);">5×4 (20 cadres) — marges serrées</span></button>
-    <button class="modal-opt" onclick="addPage('grille2')">🔲 Grille auto — Modèle 2<br><span style="font-size:11px;font-weight:400;color:var(--sub);">6×5 (30 cadres) — marges compactes</span></button>
-    <button class="modal-opt" onclick="addPage('grille3')">🔲 Grille auto — Modèle 3<br><span style="font-size:11px;font-weight:400;color:var(--sub);">4×3 (12 cadres) — 5.05×8.50 cm</span></button>
-    <button class="modal-opt" onclick="addPage('lignes')">📋 Lignes libres<br><span style="font-size:11px;font-weight:400;color:var(--sub);">Hauteurs de ligne personnalisées</span></button>
+    <button class="modal-opt" onclick="addPage('grille1')">🔲 Grille auto 100ar<br><span style="font-size:11px;font-weight:400;color:var(--sub);">6×5 (30 cadres) — marges compactes</span></button>
+    <button class="modal-opt" onclick="addPage('grille2')">🔲 Grille auto 200ar<br><span style="font-size:11px;font-weight:400;color:var(--sub);">5×4 (20 cadres) — marges serrées</span></button>
+    <button class="modal-opt" onclick="addPage('grille3')">🔲 Grille auto 300ar<br><span style="font-size:11px;font-weight:400;color:var(--sub);">4×3 (12 cadres) — 5.05×8.50 cm</span></button>
+    <button class="modal-opt" onclick="showLignesCompoModal()">📋 Lignes libres<br><span style="font-size:11px;font-weight:400;color:var(--sub);">Choisir le nombre de chaque type de ligne</span></button>
     <button class="modal-cancel" onclick="document.getElementById('modal-addpage').classList.remove('show')">Annuler</button>
+  </div>
+</div>
+
+<!-- MODAL COMPOSITION LIGNES LIBRES -->
+<div id="modal-lignes-compo" style="display:none;position:fixed;inset:0;background:rgba(10,20,40,0.85);z-index:9999;align-items:center;justify-content:center;">
+  <div class="modal-box" style="max-width:340px;">
+    <h3>Composer les lignes libres</h3>
+    <div style="font-size:11px;color:var(--sub);margin-bottom:14px;">Indiquez combien de fois chaque type de ligne doit apparaître (0 = pas inclus).</div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--s2);border:1.5px solid var(--bord);border-radius:10px;padding:10px 14px;margin-bottom:8px;">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);">📷 Ligne 100ar</div>
+        <div style="font-size:10px;color:var(--sub);margin-top:2px;">6 cadres · H: 50mm</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:13px;font-weight:700;color:var(--green);">×</span>
+        <input type="number" id="lc-n1" value="1" min="0" max="20" style="width:52px;padding:5px 7px;border:1.5px solid var(--bord);border-radius:7px;font-size:15px;font-weight:700;text-align:center;background:var(--surf);color:var(--text);">
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--s2);border:1.5px solid var(--bord);border-radius:10px;padding:10px 14px;margin-bottom:8px;">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);">📷 Ligne 200ar</div>
+        <div style="font-size:10px;color:var(--sub);margin-top:2px;">5 cadres · H: 61.75mm</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:13px;font-weight:700;color:var(--green);">×</span>
+        <input type="number" id="lc-n2" value="1" min="0" max="20" style="width:52px;padding:5px 7px;border:1.5px solid var(--bord);border-radius:7px;font-size:15px;font-weight:700;text-align:center;background:var(--surf);color:var(--text);">
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--s2);border:1.5px solid var(--bord);border-radius:10px;padding:10px 14px;margin-bottom:14px;">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);">📷 Ligne 300ar</div>
+        <div style="font-size:10px;color:var(--sub);margin-top:2px;">4 cadres · H: 85mm</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:13px;font-weight:700;color:var(--green);">×</span>
+        <input type="number" id="lc-n3" value="1" min="0" max="20" style="width:52px;padding:5px 7px;border:1.5px solid var(--bord);border-radius:7px;font-size:15px;font-weight:700;text-align:center;background:var(--surf);color:var(--text);">
+      </div>
+    </div>
+
+    <button onclick="confirmLignesCompo()" style="display:block;width:100%;padding:13px;border-radius:10px;border:none;background:var(--green);color:white;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;">✓ OK — Créer la page</button>
+    <button onclick="document.getElementById('modal-lignes-compo').style.display='none';document.getElementById('modal-addpage').classList.add('show');" style="background:none;border:none;color:var(--sub);font-size:12px;cursor:pointer;width:100%;padding:6px;">← Retour</button>
   </div>
 </div>
 
@@ -208,7 +257,7 @@ select{padding:5px 8px;border:1.5px solid var(--bord);border-radius:7px;font-siz
   <button class="mb" id="mode-grille" onclick="setMode('grille')">&#9783; Grille auto</button>
   <button class="mb" id="mode-lignes" onclick="setMode('lignes')">&#9776; Lignes libres</button>
   <button class="mb" id="mode-cadre" onclick="setMode('cadre')">&#128208; Cadres</button>
-  <button class="mb" id="mode-esp" onclick="setMode('esp')">&#8596; Espacements</button>
+
   <button class="mb" id="mode-style" onclick="setMode('style')">&#127912; Style</button>
   <button class="mb" id="mode-export" onclick="setMode('export')">&#9881; Export</button>
 </div>
@@ -234,18 +283,18 @@ select{padding:5px 8px;border:1.5px solid var(--bord);border-radius:7px;font-siz
 
   <!-- Modèle 1 -->
   <div class="psect">
-    <div class="ptit" style="color:var(--blue);">Modèle 1 — 5 col × 4 lig = 20 photos</div>
-    <div class="orow"><span class="olb">Colonnes</span><input class="oi" style="width:46px;" type="number" value="5" min="1" max="12" readonly></div>
-    <div class="orow"><span class="olb">Lignes</span><input class="oi" style="width:46px;" type="number" value="4" min="1" max="15" readonly></div>
-    <div style="font-size:11px;color:var(--sub);margin:2px 0 4px 0;">Haut: 3.5mm · Bas: 9mm · G: 1mm · D: 1mm · Entre col: 2mm · Entre lig: 12.5mm</div>
+    <div class="ptit" style="color:var(--blue);">Modèle 1 — 6 col × 5 lig = 30 photos</div>
+    <div class="orow"><span class="olb">Colonnes</span><input class="oi" style="width:46px;" type="number" value="6" min="1" max="12" readonly></div>
+    <div class="orow"><span class="olb">Lignes</span><input class="oi" style="width:46px;" type="number" value="5" min="1" max="15" readonly></div>
+    <div style="font-size:11px;color:var(--sub);margin:2px 0 4px 0;">Haut: 2mm · Bas: 7mm · G: 0.75mm · D: 0.75mm · Entre col: 1.5mm · Entre lig: 9mm</div>
   </div>
 
   <!-- Modèle 2 -->
   <div class="psect">
-    <div class="ptit" style="color:var(--purple);">Modèle 2 — 6 col × 5 lig = 30 photos</div>
-    <div class="orow"><span class="olb">Colonnes</span><input class="oi" style="width:46px;" type="number" value="6" min="1" max="12" readonly></div>
-    <div class="orow"><span class="olb">Lignes</span><input class="oi" style="width:46px;" type="number" value="5" min="1" max="15" readonly></div>
-    <div style="font-size:11px;color:var(--sub);margin:2px 0 4px 0;">Haut: 2mm · Bas: 7mm · G: 0.75mm · D: 0.75mm · Entre col: 1.5mm · Entre lig: 9mm</div>
+    <div class="ptit" style="color:var(--purple);">Modèle 2 — 5 col × 4 lig = 20 photos</div>
+    <div class="orow"><span class="olb">Colonnes</span><input class="oi" style="width:46px;" type="number" value="5" min="1" max="12" readonly></div>
+    <div class="orow"><span class="olb">Lignes</span><input class="oi" style="width:46px;" type="number" value="4" min="1" max="15" readonly></div>
+    <div style="font-size:11px;color:var(--sub);margin:2px 0 4px 0;">Haut: 3.5mm · Bas: 9mm · G: 1mm · D: 1mm · Entre col: 2mm · Entre lig: 12.5mm</div>
   </div>
 
   <!-- Modèle 3 -->
@@ -277,13 +326,10 @@ select{padding:5px 8px;border:1.5px solid var(--bord);border-radius:7px;font-siz
   <div class="hint">Configurez chaque <strong>ligne</strong> indépendamment : nombre de cadres côte à côte et hauteur.</div>
   <div class="lignes-wrap" id="lignes-wrap"></div>
   <button class="add-ligne-btn" onclick="showAddLigneModal()">+ Ajouter une ligne</button>
-  <div style="margin-top:8px;font-size:12px;color:var(--sub);">Espacement entre cadres :
-    <input class="oi" style="width:50px;margin:0 4px;" id="l-gcol" type="number" value="2" step="0.5"> mm horiz.
-    <input class="oi" style="width:50px;margin:0 4px;" id="l-grow" type="number" value="12.5" step="0.5"> mm vert.
-  </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
     <button class="osv" onclick="generateLignes()">&#10003; Générer</button>
     <button class="ors" onclick="resetLignes()">&#8635; Réinitialiser</button>
+    <button class="ors" onclick="resetEsp()" style="font-size:11px;">&#8635; Réinit. espacements</button>
   </div>
   <div style="font-size:11px;" id="l-info"></div>
 </div>
@@ -301,18 +347,15 @@ select{padding:5px 8px;border:1.5px solid var(--bord);border-radius:7px;font-siz
   </div>
 </div>
 
-<!-- ESPACEMENTS (pour mode lignes) -->
-<div class="panel" id="panel-esp">
-  <div class="psect">
-    <div class="ptit">Marges page (mode Lignes)</div>
-    <div class="orow"><span class="olb">&#8679; Haut</span><input class="oi" id="mt" type="number" value="3.5" step="0.5"><span class="ou">mm</span></div>
-    <div class="orow"><span class="olb">&#8681; Bas</span><input class="oi" id="mb2" type="number" value="9" step="0.5"><span class="ou">mm</span></div>
-    <div class="orow"><span class="olb">&#8678; Gauche</span><input class="oi" id="ml" type="number" value="1" step="0.5"><span class="ou">mm</span></div>
-    <div class="orow"><span class="olb">&#8680; Droite</span><input class="oi" id="mr" type="number" value="1" step="0.5"><span class="ou">mm</span></div>
-    <button class="osv" onclick="generateLignes()">&#10003; Appliquer</button>
-    <button class="ors" onclick="resetEsp()">&#8635; Reset</button>
-  </div>
-</div>
+
+
+<!-- HIDDEN INPUTS pour compatibilité getEspLignes (valeurs globales par défaut) -->
+<input type="hidden" id="mt" value="3.5">
+<input type="hidden" id="mb2" value="9">
+<input type="hidden" id="ml" value="1">
+<input type="hidden" id="mr" value="1">
+<input type="hidden" id="l-gcol" value="2">
+<input type="hidden" id="l-grow" value="12.5">
 
 <!-- STYLE -->
 <div class="panel" id="panel-style">
@@ -441,8 +484,8 @@ let pageMode=[];
 
 // Défauts grille 
 const PAGE_DEFAULTS=[
-  {cols:5,rows:4,mt:3.5,mb:9,ml:1,mr:1,gcol:2,grow:12.5,radius:0},
   {cols:6,rows:5,mt:2,mb:7,ml:0.75,mr:0.75,gcol:1.5,grow:9,radius:0},
+  {cols:5,rows:4,mt:3.5,mb:9,ml:1,mr:1,gcol:2,grow:12.5,radius:0},
   {cols:4,rows:3,mt:4,mb:10,ml:1,mr:1,gcol:2,grow:14,radius:0}
 ];
 function getPageDefault(pi){return PAGE_DEFAULTS[pi%2];}
@@ -455,17 +498,27 @@ let pageLigneCfgs=[];
 
 // Défaut lignes libres (selon les valeurs demandées)
 function defaultLigneCfgs(){
+  const l3={cols:4,heightMm:85,mt:4,mb:10,ml:1,mr:1,gcol:2,grow:14};
   return [
-    {cols:5,heightMm:61.75},
-    {cols:6,heightMm:50},
-    {cols:4,heightMm:61.3},
-    {cols:5,heightMm:61.75}
+    Object.assign({},l3),
+    Object.assign({},l3),
+    Object.assign({},l3)
   ];
 }
 
-// Espacements lignes (globaux, comme avant)
-// Valeurs corrigées selon spec : gcol=2, grow=12.5, mt=3.5, mb=9, ml=1, mr=1
-function getEspLignes(){
+// Espacements lignes : maintenant par ligne (lc), avec fallback global
+function getEspLignes(lc){
+  if(lc){
+    return{
+      mt:lc.mt!==undefined?lc.mt:3.5,
+      mb:lc.mb!==undefined?lc.mb:9,
+      ml:lc.ml!==undefined?lc.ml:1,
+      mr:lc.mr!==undefined?lc.mr:1,
+      gcol:lc.gcol!==undefined?lc.gcol:2,
+      grow:lc.grow!==undefined?lc.grow:12.5
+    };
+  }
+  // Fallback global (pour exports)
   return{
     mt:parseFloat(document.getElementById('mt').value)||3.5,
     mb:parseFloat(document.getElementById('mb2').value)||9,
@@ -507,7 +560,7 @@ function setMode(m){
   document.querySelectorAll('.mb').forEach(b=>b.classList.remove('active'));
   document.getElementById('mode-'+m).classList.add('active');
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
-  const map={zoom:'panel-zoom',grille:'panel-grille',lignes:'panel-lignes',cadre:'panel-cadre',esp:'panel-esp',style:'panel-style',export:'panel-export'};
+  const map={zoom:'panel-zoom',grille:'panel-grille',lignes:'panel-lignes',cadre:'panel-cadre',style:'panel-style',export:'panel-export'};
   if(map[m])document.getElementById(map[m]).classList.add('show');
   document.body.classList.toggle('mode-zoom',m==='zoom');
   // Réinitialiser l'édition de page si on change de mode
@@ -640,7 +693,15 @@ function renderLigneCfg(){
     div.innerHTML='<div class="ligne-card-title">Ligne '+(i+1)+'</div>'+
       (lcs.length>1?'<button class="ligne-del" onclick="removeLigne('+i+')">&#10005;</button>':'')+
       '<div class="ligne-inp-group"><label>Cadres côte à côte</label><input type="number" value="'+l.cols+'" min="1" max="12" onchange="getLigneCfgs()['+i+'].cols=Math.max(1,parseInt(this.value)||1)"></div>'+
-      '<div class="ligne-inp-group"><label>Hauteur (mm)</label><input type="number" value="'+l.heightMm+'" min="5" max="200" step="0.5" onchange="getLigneCfgs()['+i+'].heightMm=Math.max(5,parseFloat(this.value)||50)"></div>';
+      '<div class="ligne-inp-group"><label>Hauteur (mm)</label><input type="number" value="'+l.heightMm+'" min="5" max="200" step="0.5" onchange="getLigneCfgs()['+i+'].heightMm=Math.max(5,parseFloat(this.value)||50)"></div>'+
+      '<div style="width:100%;margin-top:6px;padding-top:6px;border-top:1px solid var(--bord);display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">'+
+        '<div class="ligne-inp-group" style="flex-direction:column;gap:2px;"><label style="font-size:10px;">↑ Haut (mm)</label><input type="number" value="'+(l.mt||3.5)+'" min="0" max="50" step="0.5" style="width:100%;" onchange="getLigneCfgs()['+i+'].mt=parseFloat(this.value)||0;generateLignes();"></div>'+
+        '<div class="ligne-inp-group" style="flex-direction:column;gap:2px;"><label style="font-size:10px;">↓ Bas (mm)</label><input type="number" value="'+(l.mb||9)+'" min="0" max="50" step="0.5" style="width:100%;" onchange="getLigneCfgs()['+i+'].mb=parseFloat(this.value)||0;generateLignes();"></div>'+
+        '<div class="ligne-inp-group" style="flex-direction:column;gap:2px;"><label style="font-size:10px;">← Gauche (mm)</label><input type="number" value="'+(l.ml||1)+'" min="0" max="50" step="0.5" style="width:100%;" onchange="getLigneCfgs()['+i+'].ml=parseFloat(this.value)||0;generateLignes();"></div>'+
+        '<div class="ligne-inp-group" style="flex-direction:column;gap:2px;"><label style="font-size:10px;">→ Droite (mm)</label><input type="number" value="'+(l.mr||1)+'" min="0" max="50" step="0.5" style="width:100%;" onchange="getLigneCfgs()['+i+'].mr=parseFloat(this.value)||0;generateLignes();"></div>'+
+        '<div class="ligne-inp-group" style="flex-direction:column;gap:2px;"><label style="font-size:10px;">↔ Entre col (mm)</label><input type="number" value="'+(l.gcol||2)+'" min="0" max="30" step="0.5" style="width:100%;" onchange="getLigneCfgs()['+i+'].gcol=parseFloat(this.value)||0;generateLignes();"></div>'+
+        '<div class="ligne-inp-group" style="flex-direction:column;gap:2px;"><label style="font-size:10px;">↕ Entre lig (mm)</label><input type="number" value="'+(l.grow||12.5)+'" min="0" max="50" step="0.5" style="width:100%;" onchange="getLigneCfgs()['+i+'].grow=parseFloat(this.value)||0;generateLignes();"></div>'+
+      '</div>';
     wrap.appendChild(div);
   });
 }
@@ -649,16 +710,16 @@ function addLigneCfg(){
   const pi=_editPageIdx!==undefined?_editPageIdx:0;
   const lcs=getLigneCfgs(pi);
   // Dupliquer la dernière ligne existante
-  const last=lcs[lcs.length-1]||{cols:4,heightMm:55};
-  lcs.push({cols:last.cols,heightMm:last.heightMm});
+  const last=lcs[lcs.length-1]||{cols:4,heightMm:55,mt:3.5,mb:9,ml:1,mr:1,gcol:2,grow:12.5};
+  lcs.push({cols:last.cols,heightMm:last.heightMm,mt:last.mt||3.5,mb:last.mb||9,ml:last.ml||1,mr:last.mr||1,gcol:last.gcol||2,grow:last.grow||12.5});
   renderLigneCfg();
 }
 
 // Presets de lignes
 const LIGNE_PRESETS=[
   null,
-  {cols:5,heightMm:61.75,gcol:2,grow:12.5,mt:3.5,mb:9,ml:1,mr:1},
   {cols:6,heightMm:50,gcol:1.5,grow:9,mt:2,mb:7,ml:0.75,mr:0.75},
+  {cols:5,heightMm:61.75,gcol:2,grow:12.5,mt:3.5,mb:9,ml:1,mr:1},
   {cols:4,heightMm:85,gcol:2,grow:14,mt:4,mb:10,ml:1,mr:1}
 ];
 
@@ -671,14 +732,7 @@ function addLigneCfgType(type){
   const pi=_editPageIdx!==undefined?_editPageIdx:0;
   const lcs=getLigneCfgs(pi);
   const preset=LIGNE_PRESETS[type];
-  lcs.push({cols:preset.cols,heightMm:preset.heightMm});
-  // Appliquer les espacements du preset choisi
-  document.getElementById('l-gcol').value=preset.gcol;
-  document.getElementById('l-grow').value=preset.grow;
-  document.getElementById('mt').value=preset.mt;
-  document.getElementById('mb2').value=preset.mb;
-  document.getElementById('ml').value=preset.ml;
-  document.getElementById('mr').value=preset.mr;
+  lcs.push({cols:preset.cols,heightMm:preset.heightMm,mt:preset.mt,mb:preset.mb,ml:preset.ml,mr:preset.mr,gcol:preset.gcol,grow:preset.grow});
   renderLigneCfg();
 }
 
@@ -698,30 +752,27 @@ function resetLignes(){
 }
 
 function resetEsp(){
-  ['mt','mb2','ml','mr'].forEach(id=>{
-    const vals={mt:3.5,mb2:9,ml:1,mr:1};
-    document.getElementById(id).value=vals[id];
-  });
-  document.getElementById('l-gcol').value=2;
-  document.getElementById('l-grow').value=12.5;
+  const pi=_editPageIdx!==undefined?_editPageIdx:0;
+  const lcs=getLigneCfgs(pi);
+  lcs.forEach(l=>{l.mt=3.5;l.mb=9;l.ml=1;l.mr=1;l.gcol=2;l.grow=12.5;});
+  renderLigneCfg();
   generateLignes();
 }
 
 function generateLignes(){
   const pi=_editPageIdx!==undefined?_editPageIdx:null;
-  const e=getEspLignes();
   const targetPi=pi!==null?pi:0;
   const lcs=getLigneCfgs(targetPi);
-  const totalH=lcs.reduce((s,l)=>s+l.heightMm,0)+(lcs.length-1)*e.grow+e.mt+e.mb;
+  // Hauteur totale = somme des hauteurs + marges de chaque ligne + espacement entre lignes (grow de chaque ligne sauf dernière)
+  const totalH=lcs.reduce((s,l,i)=>s+l.heightMm+(l.mt||3.5)+(l.mb||9)+(i<lcs.length-1?(l.grow||12.5):0),0);
   const info=document.getElementById('l-info');
-  if(totalH>cfg.pageH){info.style.color='var(--red)';info.textContent='Hauteur '+totalH.toFixed(0)+'mm > '+cfg.pageH+'mm. Réduisez.';return;}
+  if(totalH>cfg.pageH*1.5){info.style.color='var(--red)';info.textContent='Hauteur '+totalH.toFixed(0)+'mm > '+cfg.pageH+'mm. Réduisez.';return;}
   info.style.color='var(--green)';info.textContent='OK — '+lcs.length+' lignes — '+lcs.reduce((s,l)=>s+l.cols,0)+' cadres';
   saveHistory();
   if(pi!==null&&pi<pages.length){
     pageMode[pi]='lignes';
     pages[pi]=lcs.map(l=>Array.from({length:l.cols},()=>newCell(parseInt(document.getElementById('gar').value)||0)));
   } else {
-    // Appliquer à la première page seulement
     pageMode[0]='lignes';
     pages[0]=lcs.map(l=>Array.from({length:l.cols},()=>newCell(parseInt(document.getElementById('gar').value)||0)));
   }
@@ -862,8 +913,6 @@ function renderGrillePageEl(cont,sc,dW,dH,pg,pi){
 }
 
 function renderLignesPageEl(cont,sc,dW,dH,pg,pi){
-  const e=getEspLignes();
-  const usableW=cfg.pageW-e.ml-e.mr;
   const showBadge=currentMode==='cadre';
   const lcs=getLigneCfgs(pi);
 
@@ -876,12 +925,16 @@ function renderLignesPageEl(cont,sc,dW,dH,pg,pi){
 
   const po=document.createElement('div');po.className='po';
   const page=document.createElement('div');page.className='page';
-  page.style.cssText='width:'+dW+'px;height:'+dH+'px;background:'+cfg.bgColor+';display:flex;flex-direction:column;padding:'+e.mt*sc+'px '+e.mr*sc+'px '+e.mb*sc+'px '+e.ml*sc+'px;gap:'+e.grow*sc+'px;';
+  page.style.cssText='width:'+dW+'px;min-height:'+dH+'px;background:'+cfg.bgColor+';display:flex;flex-direction:column;';
 
   lcs.forEach((lc,li)=>{
+    const e=getEspLignes(lc);
+    const usableW=cfg.pageW-e.ml-e.mr;
     if(!pg[li])pg[li]=[];
     while(pg[li].length<lc.cols)pg[li].push(newCell(parseInt(document.getElementById('gar').value)||0));
     const cellW=(usableW-(lc.cols-1)*e.gcol)/lc.cols;
+    const ligneWrap=document.createElement('div');
+    ligneWrap.style.cssText='padding:'+e.mt*sc+'px '+e.mr*sc+'px '+(li<lcs.length-1?e.grow*sc:e.mb*sc)+'px '+e.ml*sc+'px;';
     const ligneEl=document.createElement('div');
     ligneEl.style.cssText='display:flex;gap:'+e.gcol*sc+'px;height:'+lc.heightMm*sc+'px;flex-shrink:0;';
     pg[li].forEach((c,ci)=>{
@@ -890,7 +943,8 @@ function renderLignesPageEl(cont,sc,dW,dH,pg,pi){
       cell.style.width=cellW*sc+'px';cell.style.height=lc.heightMm*sc+'px';cell.style.flexShrink='0';
       ligneEl.appendChild(cell);
     });
-    page.appendChild(ligneEl);
+    ligneWrap.appendChild(ligneEl);
+    page.appendChild(ligneWrap);
   });
   po.appendChild(page);wrap.appendChild(lbl);wrap.appendChild(editBar);wrap.appendChild(po);cont.appendChild(wrap);
 }
@@ -1044,6 +1098,34 @@ function handleReplace(files){
   document.getElementById('fi-replace').value='';
 }
 
+function showLignesCompoModal(){
+  document.getElementById('modal-addpage').classList.remove('show');
+  // Reset valeurs par défaut
+  document.getElementById('lc-n1').value=1;
+  document.getElementById('lc-n2').value=1;
+  document.getElementById('lc-n3').value=1;
+  document.getElementById('modal-lignes-compo').style.display='flex';
+}
+
+function confirmLignesCompo(){
+  const n1=Math.max(0,parseInt(document.getElementById('lc-n1').value)||0);
+  const n2=Math.max(0,parseInt(document.getElementById('lc-n2').value)||0);
+  const n3=Math.max(0,parseInt(document.getElementById('lc-n3').value)||0);
+  if(n1+n2+n3===0){alert('Choisissez au moins une ligne (×1 minimum).');return;}
+  document.getElementById('modal-lignes-compo').style.display='none';
+  saveHistory();
+  const newPi=pages.length;
+  const cfgs=[];
+  const p1=LIGNE_PRESETS[1],p2=LIGNE_PRESETS[2],p3=LIGNE_PRESETS[3];
+  for(let i=0;i<n1;i++)cfgs.push({cols:p1.cols,heightMm:p1.heightMm,mt:p1.mt,mb:p1.mb,ml:p1.ml,mr:p1.mr,gcol:p1.gcol,grow:p1.grow});
+  for(let i=0;i<n2;i++)cfgs.push({cols:p2.cols,heightMm:p2.heightMm,mt:p2.mt,mb:p2.mb,ml:p2.ml,mr:p2.mr,gcol:p2.gcol,grow:p2.grow});
+  for(let i=0;i<n3;i++)cfgs.push({cols:p3.cols,heightMm:p3.heightMm,mt:p3.mt,mb:p3.mb,ml:p3.ml,mr:p3.mr,gcol:p3.gcol,grow:p3.grow});
+  pageMode[newPi]='lignes';
+  pageLigneCfgs[newPi]=cfgs;
+  pages.push(cfgs.map(l=>Array.from({length:l.cols},()=>newCell(parseInt(document.getElementById('gar').value)||0))));
+  render();
+}
+
 function addPage(type){
   document.getElementById('modal-addpage').classList.remove('show');
   saveHistory();
@@ -1095,11 +1177,13 @@ async function exportPDF(){
     if(pi>0)doc.addPage();
     const rgb=hRgb(cfg.bgColor);doc.setFillColor(rgb[0],rgb[1],rgb[2]);doc.rect(0,0,cfg.pageW,cfg.pageH,'F');
     if(pageMode[pi]==='lignes'){
-      const e=getEspLignes();const usableW=cfg.pageW-e.ml-e.mr;
       const lcs=getLigneCfgs(pi);
-      let yCur=e.mt;
+      let yCur=0;
       for(let li=0;li<pages[pi].length;li++){
-        const lc=lcs[li]||{cols:4,heightMm:55};
+        const lc=lcs[li]||{cols:4,heightMm:55,mt:3.5,mb:9,ml:1,mr:1,gcol:2,grow:12.5};
+        const e=getEspLignes(lc);
+        const usableW=cfg.pageW-e.ml-e.mr;
+        yCur+=e.mt;
         const cellW=(usableW-(lc.cols-1)*e.gcol)/lc.cols;let xCur=e.ml;
         if(Array.isArray(pages[pi][li])){
           for(let ci=0;ci<pages[pi][li].length;ci++){
@@ -1108,7 +1192,7 @@ async function exportPDF(){
             xCur+=cellW+e.gcol;
           }
         }
-        yCur+=lc.heightMm+e.grow;
+        yCur+=lc.heightMm+(li<pages[pi].length-1?e.grow:e.mb);
       }
     } else {
       const g=getPageCfg(pi);
@@ -1153,11 +1237,13 @@ async function exportPNG(){
     const rgb=hRgb(cfg.bgColor);ctx.fillStyle='rgb('+rgb[0]+','+rgb[1]+','+rgb[2]+')';ctx.fillRect(0,0,PX,PY);
 
     if(pageMode[pi]==='lignes'){
-      const e=getEspLignes();const usableWmm=cfg.pageW-e.ml-e.mr;
       const lcs=getLigneCfgs(pi);
-      let yCurMm=e.mt;
+      let yCurMm=0;
       for(let li=0;li<pages[pi].length;li++){
-        const lc=lcs[li]||{cols:4,heightMm:55};
+        const lc=lcs[li]||{cols:4,heightMm:55,mt:3.5,mb:9,ml:1,mr:1,gcol:2,grow:12.5};
+        const e=getEspLignes(lc);
+        const usableWmm=cfg.pageW-e.ml-e.mr;
+        yCurMm+=e.mt;
         const cellWmm=(usableWmm-(lc.cols-1)*e.gcol)/lc.cols;let xCurMm=e.ml;
         if(Array.isArray(pages[pi][li])){
           for(let ci=0;ci<pages[pi][li].length;ci++){
@@ -1170,7 +1256,7 @@ async function exportPNG(){
             xCurMm+=cellWmm+e.gcol;
           }
         }
-        yCurMm+=lc.heightMm+e.grow;
+        yCurMm+=lc.heightMm+(li<pages[pi].length-1?e.grow:e.mb);
       }
     } else {
       const g=getPageCfg(pi);
@@ -1224,15 +1310,17 @@ async function exportWord(){
   for(let pi=0;pi<pages.length;pi++){
     imgParts+='<p style="page-break-before:'+(pi>0?'always':'auto')+';margin:0;font-family:Arial;font-size:8pt;color:#666;">Page '+(pi+1)+'</p>';
     if(pageMode[pi]==='lignes'){
-      const e=getEspLignes();const usableW=cfg.pageW-e.ml-e.mr;
       const lcs=getLigneCfgs(pi);
       for(let li=0;li<pages[pi].length;li++){
         if(!Array.isArray(pages[pi][li]))continue;
-        const lc=lcs[li]||{cols:4,heightMm:55};
+        const lc=lcs[li]||{cols:4,heightMm:55,mt:3.5,mb:9,ml:1,mr:1,gcol:2,grow:12.5};
+        const e=getEspLignes(lc);
+        const usableW=cfg.pageW-e.ml-e.mr;
         const cellW=(usableW-(lc.cols-1)*e.gcol)/lc.cols;
         const cellWcm=cellW/10,cellHcm=lc.heightMm/10;
         const cwPx=Math.round(cellW*pxPerMm),chPx=Math.round(lc.heightMm*pxPerMm);
-        imgParts+='<table style="border-collapse:collapse;margin-bottom:'+(e.grow/10)+'cm;">';
+        const marginBcm=(li<pages[pi].length-1?e.grow:e.mb)/10;
+        imgParts+='<table style="border-collapse:collapse;margin-left:'+(e.ml/10)+'cm;margin-top:'+(e.mt/10)+'cm;margin-bottom:'+marginBcm+'cm;">';
         imgParts+='<tr>';
         for(let ci=0;ci<pages[pi][li].length;ci++){
           const c=pages[pi][li][ci];
